@@ -13,7 +13,7 @@ int array_sum(int array[],int start,int last)
 
 int checkIRSpecialCondition(){
     Serial2.println("checkIRSpecialCondition");
-    get_IR_binary_array();
+    // get_IR_binary_array();
 
     //Serial2.println();
     //Serial2.print("L "); Serial2.print(array_sum(irBinaryValue,8,15));

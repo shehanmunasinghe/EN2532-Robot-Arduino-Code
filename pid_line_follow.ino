@@ -11,7 +11,7 @@ void clear_line_follow_pid_variables(){
 void pid_line_follow_step(){    
 
     //check_45();
-    get_IR_readings();
+    // get_IR_readings();
 
     //checkIRSpecialCondition();
 

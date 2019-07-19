@@ -12,14 +12,20 @@ void print_IR_binary_array(){
     Serial2.println(" ");
 }
 
-void debug_ToFs( int tof_left1,int tof_left2,int tof_front){
+void print_tof_readings(){
+    get_ToF_Measurements();
 
-    Serial2.print(tof_left1);
-    Serial2.print(",  ");
-    Serial2.print(tof_left2);
-    Serial2.print(",  ");
-    Serial2.print(tof_front);
-    Serial2.print(" \n  ");
+    Serial.print(tof_right_2);
+    Serial.print(",  ");
+    Serial.print(tof_right_1);
+    Serial.print(",  ");
+    Serial.print(tof_front);
+    Serial.print(",  ");
+    Serial.print(tof_left_1);
+    Serial.print(",  ");
+    Serial.print(tof_left_2);
+    Serial.print(" \n  ");
+    //delay(100);  
 }
 
 void debug_Wall_Follow(uint16_t tof_left1,uint16_t tof_left2,uint16_t tof_front, int error,int left_speed,int right_speed){

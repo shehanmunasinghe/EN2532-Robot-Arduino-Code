@@ -20,6 +20,18 @@
 #define Servo4_PWM 5
 #define Servo5_PWM 4
 
+#define TOF1_XSHUT 34           
+#define TOF2_XSHUT 33           
+#define TOF3_XSHUT 32           
+#define TOF4_XSHUT 31           
+#define TOF5_XSHUT 30   
+
+#define TOF1_ADDR 0x2A
+#define TOF2_ADDR 0x2B
+#define TOF3_ADDR 0x2C
+#define TOF4_ADDR 0x2D
+#define TOF5_ADDR 0x2E
+
 /*--------------------------------Constant Definitions--------------------------------*/
 
 //STATES
@@ -82,8 +94,8 @@
 #include <Encoder.h>
 #include <Servo.h>
 
-
-#include <PololuRPiSlave.h>
+#include <Wire.h>
+#include <VL53L0X.h>
 
 /*--------------------------------Global Objects--------------------------------*/
 
@@ -93,34 +105,7 @@ Encoder EncLeft(Motor2_Encoder1, Motor2_Encoder2);
 
 Servo servo1,servo2,servo3,servo4,servo5;
 
-//int RobotStatus=0;
-
-struct DataFrameStructure{
-  uint16_t encoded_ADC_readings; // 2 Bytes (0 -1)
-
-  // bool yellow, green, red;
-  // bool buttonA, buttonB, buttonC;
-
-  // int16_t leftMotor, rightMotor;
-  
-  uint16_t tof_right_2;
-  uint16_t tof_right_1;
-  uint16_t tof_front;
-  uint16_t tof_left_1;
-  uint16_t tof_left_2; // 10 Bytes (2 -11)
-
-  //bool check_IMU_status_flag;
-  uint8_t IMU_status;
-
-  // uint16_t analog[6];
-
-  // bool playNotes;
-  // char notes[14];
-
-  // int16_t leftEncoder, rightEncoder;
-};
-
-PololuRPiSlave<struct DataFrameStructure,10> comm_bridge;
+VL53L0X TOF_sensor_1;VL53L0X TOF_sensor_2;VL53L0X TOF_sensor_3;VL53L0X TOF_sensor_4;VL53L0X TOF_sensor_5;
 
 /*--------------------------------Global Variables - General--------------------------------*/
 
@@ -137,7 +122,6 @@ uint8_t robot_state=0;
 
 uint8_t Motor_PWM_Upper_Limit = 80;
 
-//bool check_IMU_status_flag =false;
 uint8_t IMU_status;
 
 bool button_pressed=false;
@@ -173,22 +157,7 @@ void setup() {
   init_motors();
   init_IR();
   init_Servos();
-  //init_LCD();
-
-
-  comm_bridge.init(20); //Initialize as I2C slave at address=20 (0x14)
-
-
-  //Serial2.println("Press Button To Start !!!");
-
-  // while(1){
-  //   if(digitalRead(38)==0){
-  //     Serial2.println("STATE_DEFAULT_START");
-  //     delay(500);
-  //     robot_state = STATE_DEFAULT_START;
-  //     break;
-  //   }
-  // }
+  init_TOFs();
 
   robot_state = STATE_DEFAULT_START;
 
@@ -197,25 +166,18 @@ void setup() {
 /*--------------------------------Loop-----------------------------------------------*/
 
 void loop(){
-  comm_handler();
 
-  // if(digitalRead(38)==0){
-  //   Serial2.println("Button Pressed");
-  //   robot_state=STATE_PAUSED;
-  //   delay(500);
-  // }
+	// decide();
+	print_tof_readings();
 
-  //decide();
-
-
-  test_function();
+//   test_function();
   //test_wall_maze();
 
 }
 
 
 
-void test_function(){
+/* void test_function(){
   //motors_DriveGivenDistance(10);
   //motors_Turn_90_Left();
   //motorL_TurnRevolutions(-1000);
@@ -287,4 +249,4 @@ void test_wall_maze(){
 			break;
 
 	}
-}
+} */

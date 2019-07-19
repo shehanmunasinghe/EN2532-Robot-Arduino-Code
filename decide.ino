@@ -4,7 +4,7 @@ void decide(){
 
   switch (robot_state){
     //0
-    case STATE_PAUSED:
+/*     case STATE_PAUSED:
       Serial2.println("STATE_PAUSED");
       motors_brake();
 
@@ -18,7 +18,7 @@ void decide(){
         }
       }
 
-      break;
+      break; */
     //1
     case STATE_INSIDE_START_BOX:
       Serial2.println("STATE_INSIDE_START_BOX");
@@ -28,8 +28,12 @@ void decide(){
     //2
     case STATE_LINE_1:
       Serial2.println("STATE_LINE_1");
-      //print_IR_readings();
+
+      get_IR_readings();get_IR_binary_array();
+      print_IR_binary_array();
+
       temp_ir_condition = checkIRSpecialCondition();
+
       switch (temp_ir_condition)
       {
         // case IR_ALL_BLACK:
@@ -56,15 +60,18 @@ void decide(){
       }
       
       //robot_state=?? To be updated in the PID loop
-      print_IR_binary_array();
       break;
     //3
     case STATE_DETECTED_COIN_BOX_1:
       robot_state = STATE_PAUSED; //Change this line
       break;
     //9
-    case STATE_LINE_2:
+/*     case STATE_LINE_2:
       Serial2.println("STATE_LINE_2");
+      
+      get_IR_readings();get_IR_binary_array();
+      print_IR_binary_array();
+
       if(IMU_status==IMU_RAMP_AHEAD_OR_CLIMB){
         Motor_PWM_Upper_Limit=255;
       }else if(IMU_status==IMU_RAMP_DESCENT)
@@ -76,7 +83,7 @@ void decide(){
         Motor_PWM_Upper_Limit=100;
       }
       pid_line_follow_step();
-      break;
+      break; */
 
     case STATE_WALL_MAZE:
       Serial2.println("STATE_WALL_MAZE");
@@ -100,7 +107,7 @@ void decide(){
         case WALL_LEFT_FREE:
             while (true)
             { 
-              comm_handler_get_tofs();
+              get_ToF_Measurements();
               if(tof_left_2 >200){
                 Serial2.println("tof_left_2 >200");
                 break;
