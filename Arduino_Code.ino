@@ -1,0 +1,290 @@
+/*--------------------------------Pin Definitions--------------------------------*/
+
+//rotaryEncRight
+#define Motor1_INA 24//D5
+#define Motor1_INB 25//D7
+#define Motor1_PWM 11//D6
+//rotaryEncLeft
+#define Motor2_INA 26//D2
+#define Motor2_INB 27//D4
+#define Motor2_PWM 12//D3
+
+#define Motor1_Encoder1 2//A2
+#define Motor1_Encoder2 3//A3
+#define Motor2_Encoder1 18//A5 //A4
+#define Motor2_Encoder2 19//A4 //A5
+
+#define Servo1_PWM 8
+#define Servo2_PWM 7
+#define Servo3_PWM 6
+#define Servo4_PWM 5
+#define Servo5_PWM 4
+
+/*--------------------------------Constant Definitions--------------------------------*/
+
+//STATES
+#define STATE_PAUSED                      0
+#define STATE_DEFAULT_START               14 //STATE_WALL_MAZE  //1//STATE_INSIDE_START_BOX            //
+
+#define STATE_INSIDE_START_BOX            1
+#define STATE_LINE_1                      2
+#define STATE_DETECTED_COIN_BOX_1         3
+#define STATE_DETECTED_COIN_COLOR         4
+#define STATE_DETECTED_Y_JUNCTION         5
+#define STATE_SELECTED_Y_PATH             6
+#define STATE_DETECTED_COIN_BOX_2         7
+#define STATE_END_OF_Y                    8
+#define STATE_LINE_2                      9
+#define STATE_RAMP_CLIMB                  10
+#define STATE_RAMP_TOP                    11
+#define STATE_RAMP_DESCEND                12
+#define STATE_LINE_3                      13
+#define STATE_WALL_MAZE                   14
+#define STATE_LINE_4                      15
+#define STATE_DETECTED_WATER_JUNCTION     16
+#define STATE_SELECTED_WATER_PATH         17
+#define STATE_DETECTED_WATER_TANK         18
+#define STATE_RETURNED_TO_WATER_JUNCTION  19
+#define STATE_DETECTED_END_BOX            20
+
+
+//IMU STATES
+#define IMU_RAMP_AHEAD_OR_CLIMB           1
+#define IMU_RAMP_DESCENT                  2 
+
+//IR Special Conditions
+#define IR_NORMAL_LINE           0
+#define IR_ALL_BLACK             1
+#define IR_ALL_WHITE             2
+#define IR_90_RIGHT              3
+#define IR_90_LEFT               4
+#define IR_COIN_BOX              5
+
+//Wall Special Conditions
+#define WALL_FOLLOW_BOTH              1
+#define WALL_DEAD_END                 2
+#define WALL_LEFT_FREE                3
+#define WALL_LEFT_BLOCKED_FRONT_FREE  4
+#define WALL_ONLY_RIGHT_FREE          5
+#define WALL_UNKNOWN_CONDITION        6
+#define WALL_TOF_NOT_INITIALIZED      7
+
+
+//DEBUG Messages
+#define DEBUG_IR_ARRAY 						1
+#define DEBUG_TOFS 							2
+#define DEBUG_STATE_TRANSITION				3
+#define DEBUG_CHECK_IR_SPECIAL_CONDITION	4
+#define DEBUG_CHECK_MAZE_SPECIAL_CONDITION	5
+
+
+/*--------------------------------Libraries------------------------------------------*/
+#include <Encoder.h>
+#include <Servo.h>
+
+
+#include <PololuRPiSlave.h>
+
+/*--------------------------------Global Objects--------------------------------*/
+
+
+Encoder EncRight(Motor1_Encoder1, Motor1_Encoder2);
+Encoder EncLeft(Motor2_Encoder1, Motor2_Encoder2);
+
+Servo servo1,servo2,servo3,servo4,servo5;
+
+//int RobotStatus=0;
+
+struct DataFrameStructure{
+  uint16_t encoded_ADC_readings; // 2 Bytes (0 -1)
+
+  // bool yellow, green, red;
+  // bool buttonA, buttonB, buttonC;
+
+  // int16_t leftMotor, rightMotor;
+  
+  uint16_t tof_right_2;
+  uint16_t tof_right_1;
+  uint16_t tof_front;
+  uint16_t tof_left_1;
+  uint16_t tof_left_2; // 10 Bytes (2 -11)
+
+  //bool check_IMU_status_flag;
+  uint8_t IMU_status;
+
+  // uint16_t analog[6];
+
+  // bool playNotes;
+  // char notes[14];
+
+  // int16_t leftEncoder, rightEncoder;
+};
+
+PololuRPiSlave<struct DataFrameStructure,10> comm_bridge;
+
+/*--------------------------------Global Variables - General--------------------------------*/
+
+int irValue[16]= {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+int irBinaryValue[16]={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+
+uint16_t tof_right_2 ;
+uint16_t tof_right_1 ;
+uint16_t tof_front  ;
+uint16_t tof_left_1 ;
+uint16_t tof_left_2 ;
+
+uint8_t robot_state=0;
+
+uint8_t Motor_PWM_Upper_Limit = 80;
+
+//bool check_IMU_status_flag =false;
+uint8_t IMU_status;
+
+bool button_pressed=false;
+
+int temp_ir_condition=0;int temp_wall_condition=0;
+
+char debug_buffer[5];
+/*--------------------------------Global Variables - Wall Follow--------------------------------*/
+int wf_base_speed = Motor_PWM_Upper_Limit/2;
+const int wf_Kp=1.5,wf_Kd=90,wf_Ki=0.2;
+
+int wf_prev_error=0;int wf_error=0; int wf_cum_error=0;
+int wf_diff_speed;
+int wf_right_speed;int wf_left_speed;
+
+/*--------------------------------Global Variables - Line Follow--------------------------------*/
+// int lf_base_speed = Motor_PWM_Upper_Limit/2;
+// const int lf_Kp=20,lf_Kd=5;//lf_Ki=0.2;
+int lf_base_speed = Motor_PWM_Upper_Limit;
+const int lf_Kp=20,lf_Kd=5,lf_Ki=0.2;
+
+int lf_prev_error=0;int lf_error=0; int lf_cum_error=0;
+int lf_diff_speed;
+int lf_right_speed;int lf_left_speed;
+
+int avg_ir_pos=0;
+/*--------------------------------Setup-----------------------------------------------*/
+
+void setup() {
+  Serial.begin(115200);
+  Serial2.begin(115200);
+  
+  init_motors();
+  init_IR();
+  init_Servos();
+  //init_LCD();
+
+
+  comm_bridge.init(20); //Initialize as I2C slave at address=20 (0x14)
+
+
+  //Serial2.println("Press Button To Start !!!");
+
+  // while(1){
+  //   if(digitalRead(38)==0){
+  //     Serial2.println("STATE_DEFAULT_START");
+  //     delay(500);
+  //     robot_state = STATE_DEFAULT_START;
+  //     break;
+  //   }
+  // }
+
+  robot_state = STATE_DEFAULT_START;
+
+}
+
+/*--------------------------------Loop-----------------------------------------------*/
+
+void loop(){
+  comm_handler();
+
+  // if(digitalRead(38)==0){
+  //   Serial2.println("Button Pressed");
+  //   robot_state=STATE_PAUSED;
+  //   delay(500);
+  // }
+
+  //decide();
+
+
+  test_function();
+  //test_wall_maze();
+
+}
+
+
+
+void test_function(){
+  //motors_DriveGivenDistance(10);
+  //motors_Turn_90_Left();
+  //motorL_TurnRevolutions(-1000);
+  //motors_L_R_TurnRevolutions(-1000,1000);
+  //delay(1000);
+  //Serial2.println(Motor_PWM_Upper_Limit);
+
+  // motorL_Drive(255,255);
+  // motorR_Drive(255,255);
+
+  //test_servo_1();
+  //servo1.write(0);
+
+  print_IR_readings();
+  //print_IR_binary_array();
+  Serial2.println(checkIRSpecialCondition());
+}
+
+void test_wall_maze(){
+	temp_wall_condition = checkMazeSpecialCondition();
+	switch (temp_wall_condition){
+		case WALL_TOF_NOT_INITIALIZED:
+			motors_brake();
+			delay(2000);
+			break;
+		case WALL_DEAD_END:
+			motors_Turn_180();
+			break;
+		case WALL_LEFT_FREE:
+			while (true)
+			{ 
+				comm_handler_get_tofs();
+				if(tof_left_2 >200){
+					Serial2.println("tof_left_2 >200");
+					motors_brake();
+				break;
+				}       
+				motors_DriveForward(Motor_PWM_Upper_Limit,Motor_PWM_Upper_Limit);       
+
+
+			}
+
+			motors_DriveGivenDistance(5);
+			motors_Turn_90_Left();
+			motors_DriveGivenDistance(36); 
+			
+			// motors_DriveGivenDistance(18);
+			// //delay(1000);
+			// motors_Turn_90_Left();
+			// //delay(1000);
+			// motors_DriveGivenDistance(36); 
+			delay(2000);                   
+			break;      
+		// case WALL_LEFT_BLOCKED_FRONT_FREE:
+		// 	motors_DriveGivenDistance(40);
+		// 	delay(2000);
+		// 	break;
+		// case WALL_ONLY_RIGHT_FREE:
+		// 	motors_DriveGivenDistance(18);
+		// 	//delay(1000);
+		// 	motors_Turn_90_Right();
+		// 	//delay(1000);
+		// 	motors_DriveGivenDistance(36);    
+		// 	delay(2000);
+		// 	break;                
+		default:
+			//case WALL_FOLLOW_BOTH:
+			pid_wall_follow_step();
+			break;
+
+	}
+}
