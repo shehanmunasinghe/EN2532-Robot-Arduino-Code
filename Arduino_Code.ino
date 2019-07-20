@@ -168,17 +168,26 @@ void setup() {
 void loop(){
 
 	// decide();
-	print_tof_readings();
+	// print_tof_readings();
 
 //   test_function();
   //test_wall_maze();
+
+	// test_servo_2();
+
+	// water_arm_rest_position();
+	// coin_arm_rest_position();
+	// delay(3000);
+	// // water_arm_active_position();
+	// coin_arm_pickup_position();
+	// delay(3000);
 
 }
 
 
 
-/* void test_function(){
-  //motors_DriveGivenDistance(10);
+void test_function(){
+  motors_DriveGivenDistance(10);
   //motors_Turn_90_Left();
   //motorL_TurnRevolutions(-1000);
   //motors_L_R_TurnRevolutions(-1000,1000);
@@ -191,12 +200,12 @@ void loop(){
   //test_servo_1();
   //servo1.write(0);
 
-  print_IR_readings();
+//   print_IR_readings();
   //print_IR_binary_array();
-  Serial2.println(checkIRSpecialCondition());
+//   Serial2.println(checkIRSpecialCondition());
 }
 
-void test_wall_maze(){
+/* void test_wall_maze(){
 	temp_wall_condition = checkMazeSpecialCondition();
 	switch (temp_wall_condition){
 		case WALL_TOF_NOT_INITIALIZED:
