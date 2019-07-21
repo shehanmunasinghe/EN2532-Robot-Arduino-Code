@@ -63,8 +63,8 @@ void init_TOFs(){
 
 void get_ToF_Measurements(){
     tof_right_1=TOF_sensor_1.readRangeContinuousMillimeters();
-    tof_right_2=TOF_sensor_2.readRangeContinuousMillimeters();
-    tof_left_2=TOF_sensor_3.readRangeContinuousMillimeters();
+    tof_right_2=TOF_sensor_2.readRangeContinuousMillimeters() -20; // Offset Correction for rear sensors
+    tof_left_2=TOF_sensor_3.readRangeContinuousMillimeters() -20; // Offset Correction for rear sensors
     tof_left_1=TOF_sensor_4.readRangeContinuousMillimeters();
     tof_front=TOF_sensor_5.readRangeContinuousMillimeters();
 

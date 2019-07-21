@@ -13,7 +13,7 @@ void print_IR_binary_array(){
 }
 
 void print_tof_readings(){
-    get_ToF_Measurements();
+    // get_ToF_Measurements();
 
     Serial.print(tof_right_2);
     Serial.print(",  ");

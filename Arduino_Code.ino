@@ -167,43 +167,12 @@ void setup() {
 
 void loop(){
 
-	// decide();
-	// print_tof_readings();
-
-//   test_function();
-  //test_wall_maze();
-
-	// test_servo_2();
-
-	// water_arm_rest_position();
-	// coin_arm_rest_position();
-	// delay(3000);
-	// // water_arm_active_position();
-	// coin_arm_pickup_position();
-	// delay(3000);
+	get_ToF_Measurements();
+	print_tof_readings();
+	pid_wall_follow_step();
 
 }
 
-
-
-void test_function(){
-  motors_DriveGivenDistance(10);
-  //motors_Turn_90_Left();
-  //motorL_TurnRevolutions(-1000);
-  //motors_L_R_TurnRevolutions(-1000,1000);
-  //delay(1000);
-  //Serial2.println(Motor_PWM_Upper_Limit);
-
-  // motorL_Drive(255,255);
-  // motorR_Drive(255,255);
-
-  //test_servo_1();
-  //servo1.write(0);
-
-//   print_IR_readings();
-  //print_IR_binary_array();
-//   Serial2.println(checkIRSpecialCondition());
-}
 
 /* void test_wall_maze(){
 	temp_wall_condition = checkMazeSpecialCondition();
