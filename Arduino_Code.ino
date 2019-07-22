@@ -165,8 +165,8 @@ void setup() {
 
   robot_state = STATE_DEFAULT_START;
 
-//   Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW;
-	Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW;
+  Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW;
+	// Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW;
 
 }
 
@@ -174,11 +174,8 @@ void setup() {
 
 void loop(){
 
-	test_line_follow();
-	// get_IR_readings();get_IR_binary_array();
-	// print_IR_binary_array();
-
-	// pid_line_follow_step();
+	// test_line_follow();
+	test_wall_maze();
 
 }
 
