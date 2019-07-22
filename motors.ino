@@ -255,25 +255,25 @@ void motors_Turn_180(){
 
 void motorL_brake(){
   //Left
-  digitalWrite(Motor2_INA, LOW);
-  digitalWrite(Motor2_INB, LOW);
+  digitalWrite(Motor2_INA, HIGH);
+  digitalWrite(Motor2_INB, HIGH);
   analogWrite(Motor2_PWM, 0);
 }
 
 void motorR_brake(){
   //Right
-  digitalWrite(Motor1_INA, LOW);
-  digitalWrite(Motor1_INB, LOW);
+  digitalWrite(Motor1_INA, HIGH);
+  digitalWrite(Motor1_INB, HIGH);
   analogWrite(Motor1_PWM, 0);
 }
 
 void motors_brake(){
   //Left
-  digitalWrite(Motor2_INA, LOW);
-  digitalWrite(Motor2_INB, LOW);
+  digitalWrite(Motor2_INA, HIGH);
+  digitalWrite(Motor2_INB, HIGH);
   analogWrite(Motor2_PWM, 0);
   //Right
-  digitalWrite(Motor1_INA, LOW);
-  digitalWrite(Motor1_INB, LOW);
+  digitalWrite(Motor1_INA, HIGH);
+  digitalWrite(Motor1_INB, HIGH);
   analogWrite(Motor1_PWM, 0);
 }
