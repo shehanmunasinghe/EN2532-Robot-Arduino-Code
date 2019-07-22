@@ -89,7 +89,7 @@
 #define DEBUG_CHECK_IR_SPECIAL_CONDITION	4
 #define DEBUG_CHECK_MAZE_SPECIAL_CONDITION	5
 
-
+#define MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW 60
 /*--------------------------------Libraries------------------------------------------*/
 #include <Encoder.h>
 #include <Servo.h>
@@ -120,7 +120,7 @@ uint16_t tof_left_2 ;
 
 uint8_t robot_state=0;
 
-uint8_t Motor_PWM_Upper_Limit = 80;
+uint8_t Motor_PWM_Upper_Limit;
 
 uint8_t IMU_status;
 
@@ -130,12 +130,15 @@ int temp_ir_condition=0;int temp_wall_condition=0;
 
 char debug_buffer[5];
 /*--------------------------------Global Variables - Wall Follow--------------------------------*/
-int wf_base_speed = Motor_PWM_Upper_Limit/2;
+int wf_base_speed = MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW;//= Motor_PWM_Upper_Limit;
 const int wf_Kp=1.5,wf_Kd=90,wf_Ki=0.2;
 
 int wf_prev_error=0;int wf_error=0; int wf_cum_error=0;
 int wf_diff_speed;
 int wf_right_speed;int wf_left_speed;
+
+const int wfR_Kp=5,wfR_Kd=10,wfR_Ki=0.2;
+const int wfL_Kp=5,wfL_Kd=20,wfL_Ki=0.2;
 
 /*--------------------------------Global Variables - Line Follow--------------------------------*/
 // int lf_base_speed = Motor_PWM_Upper_Limit/2;
@@ -161,101 +164,26 @@ void setup() {
 
   robot_state = STATE_DEFAULT_START;
 
+  Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW;
+
 }
 
 /*--------------------------------Loop-----------------------------------------------*/
 
 void loop(){
 
-	// decide();
-	// print_tof_readings();
+	wall_align_left(3000);
 
-//   test_function();
-  //test_wall_maze();
+	delay(5000);
+	// test_wall_maze();
 
-	// test_servo_2();
+	// motors_DriveGivenDistance(10);
+	// delay(2000);
 
-	// water_arm_rest_position();
-	// coin_arm_rest_position();
-	// delay(3000);
-	// // water_arm_active_position();
-	// coin_arm_pickup_position();
-	// delay(3000);
+	// get_ToF_Measurements();print_tof_readings();
+	// // pid_wall_follow_left_step();
+	// pid_wall_follow_right_step();
 
 }
 
 
-
-void test_function(){
-  motors_DriveGivenDistance(10);
-  //motors_Turn_90_Left();
-  //motorL_TurnRevolutions(-1000);
-  //motors_L_R_TurnRevolutions(-1000,1000);
-  //delay(1000);
-  //Serial2.println(Motor_PWM_Upper_Limit);
-
-  // motorL_Drive(255,255);
-  // motorR_Drive(255,255);
-
-  //test_servo_1();
-  //servo1.write(0);
-
-//   print_IR_readings();
-  //print_IR_binary_array();
-//   Serial2.println(checkIRSpecialCondition());
-}
-
-/* void test_wall_maze(){
-	temp_wall_condition = checkMazeSpecialCondition();
-	switch (temp_wall_condition){
-		case WALL_TOF_NOT_INITIALIZED:
-			motors_brake();
-			delay(2000);
-			break;
-		case WALL_DEAD_END:
-			motors_Turn_180();
-			break;
-		case WALL_LEFT_FREE:
-			while (true)
-			{ 
-				comm_handler_get_tofs();
-				if(tof_left_2 >200){
-					Serial2.println("tof_left_2 >200");
-					motors_brake();
-				break;
-				}       
-				motors_DriveForward(Motor_PWM_Upper_Limit,Motor_PWM_Upper_Limit);       
-
-
-			}
-
-			motors_DriveGivenDistance(5);
-			motors_Turn_90_Left();
-			motors_DriveGivenDistance(36); 
-			
-			// motors_DriveGivenDistance(18);
-			// //delay(1000);
-			// motors_Turn_90_Left();
-			// //delay(1000);
-			// motors_DriveGivenDistance(36); 
-			delay(2000);                   
-			break;      
-		// case WALL_LEFT_BLOCKED_FRONT_FREE:
-		// 	motors_DriveGivenDistance(40);
-		// 	delay(2000);
-		// 	break;
-		// case WALL_ONLY_RIGHT_FREE:
-		// 	motors_DriveGivenDistance(18);
-		// 	//delay(1000);
-		// 	motors_Turn_90_Right();
-		// 	//delay(1000);
-		// 	motors_DriveGivenDistance(36);    
-		// 	delay(2000);
-		// 	break;                
-		default:
-			//case WALL_FOLLOW_BOTH:
-			pid_wall_follow_step();
-			break;
-
-	}
-} */

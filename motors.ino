@@ -96,7 +96,7 @@ void motorR_TurnRevolutions(int desired_revos){
 }
 
 void motors_L_R_TurnRevolutions(int desired_revos_L,int desired_revos_R){
-  Serial2.println("motors_L_R_TurnRevolutions");
+  Serial2.print("motors_L_R_TurnRevolutions   "); Serial2.print(desired_revos_L);Serial2.println(desired_revos_R);
   resetLeftEncoder();resetRightEncoder();
 
   int current_pos_L=0;

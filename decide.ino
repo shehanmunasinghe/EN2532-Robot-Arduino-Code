@@ -140,7 +140,7 @@ void decide(){
             break;                
         default:
             //case WALL_FOLLOW_BOTH:
-            pid_wall_follow_step();
+            pid_wall_follow_both_step();
             break;
 
       }

@@ -18,7 +18,7 @@ int checkMazeSpecialCondition(){
         Serial2.println("WALL_LEFT_FREE");
         return WALL_LEFT_FREE;
     }
-    else if(tof_front > 200){
+    else if(tof_front > 440){
         Serial2.println("WALL_LEFT_BLOCKED_FRONT_FREE");
         return WALL_LEFT_BLOCKED_FRONT_FREE;
     }

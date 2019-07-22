@@ -13,18 +13,18 @@ void print_IR_binary_array(){
 }
 
 void print_tof_readings(){
-    get_ToF_Measurements();
+    // get_ToF_Measurements();
 
-    Serial.print(tof_right_2);
-    Serial.print(",  ");
-    Serial.print(tof_right_1);
-    Serial.print(",  ");
-    Serial.print(tof_front);
-    Serial.print(",  ");
-    Serial.print(tof_left_1);
-    Serial.print(",  ");
-    Serial.print(tof_left_2);
-    Serial.print(" \n  ");
+    Serial2.print(tof_right_2);
+    Serial2.print(",  ");
+    Serial2.print(tof_right_1);
+    Serial2.print(",  ");
+    Serial2.print(tof_front);
+    Serial2.print(",  ");
+    Serial2.print(tof_left_1);
+    Serial2.print(",  ");
+    Serial2.print(tof_left_2);
+    Serial2.print(" \n  ");
     //delay(100);  
 }
 
