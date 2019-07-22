@@ -9,6 +9,7 @@ void get_IR_readings(){
   for(int i=0; i<16; i= i+1){
       irValue[i]= analogRead(i);        // reads the values of the ir panel
   }
+  irValue[7]=irValue[8];
 }
 
 void get_IR_binary_array(){
