@@ -89,7 +89,8 @@
 #define DEBUG_CHECK_IR_SPECIAL_CONDITION	4
 #define DEBUG_CHECK_MAZE_SPECIAL_CONDITION	5
 
-#define MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW 60
+#define MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW 	60
+#define MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW 	60
 /*--------------------------------Libraries------------------------------------------*/
 #include <Encoder.h>
 #include <Servo.h>
@@ -143,8 +144,8 @@ const int wfL_Kp=5,wfL_Kd=20,wfL_Ki=0.2;
 /*--------------------------------Global Variables - Line Follow--------------------------------*/
 // int lf_base_speed = Motor_PWM_Upper_Limit/2;
 // const int lf_Kp=20,lf_Kd=5;//lf_Ki=0.2;
-int lf_base_speed = Motor_PWM_Upper_Limit;
-const int lf_Kp=20,lf_Kd=5,lf_Ki=0.2;
+int lf_base_speed = MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW;
+const int lf_Kp=35,lf_Kd=10,lf_Ki=0.2;
 
 int lf_prev_error=0;int lf_error=0; int lf_cum_error=0;
 int lf_diff_speed;
@@ -164,7 +165,8 @@ void setup() {
 
   robot_state = STATE_DEFAULT_START;
 
-  Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW;
+//   Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW;
+	Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW;
 
 }
 
@@ -173,6 +175,10 @@ void setup() {
 void loop(){
 
 	test_line_follow();
+	// get_IR_readings();get_IR_binary_array();
+	// print_IR_binary_array();
+
+	// pid_line_follow_step();
 
 }
 
@@ -189,23 +195,26 @@ void test_line_follow(){
 		//   motors_brake();
 		//   break;
 		case IR_90_LEFT:
-		/* code */
-		motors_DriveGivenDistance(13);
-		motors_Turn_90_Left(); /*turn right */
-		break;
+			motors_DriveGivenDistance(13);
+			motors_Turn_90_Left(); /*turn left */
+			break;
+
 		case IR_90_RIGHT:
-		motors_DriveGivenDistance(13);/*go fwd 13cm */
-		motors_Turn_90_Right();  /*turn right */
-		break;
+			motors_DriveGivenDistance(13);/*go fwd 13cm */
+			motors_Turn_90_Right();  /*turn right */
+			break;
+
 		case IR_COIN_BOX:
-		//Coin Collect
-		//
-		motors_brake();
-		robot_state = STATE_DETECTED_COIN_BOX_1;
-		break;
+		    motors_brake();
+      		delay(5000);
+			//Coin Collect
+			//
+			robot_state = STATE_DETECTED_COIN_BOX_1;
+			break;
+
 		default:
-		pid_line_follow_step();
-		break;
+			pid_line_follow_step();
+			break;
 	}
 }
 

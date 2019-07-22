@@ -7,7 +7,13 @@ void print_IR_readings(){
 }
 void print_IR_binary_array(){
     for (int i=0; i<16 ; i=i+1){
-        Serial2.print(irBinaryValue[i]);Serial2.print("  ");
+        if(i==7){
+             Serial2.print(irBinaryValue[i]);Serial2.print("   ");
+        }
+        else
+        {
+            Serial2.print(irBinaryValue[i]);Serial2.print("  ");
+        }     
     }
     Serial2.println(" ");
 }
