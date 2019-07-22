@@ -132,12 +132,13 @@ int temp_ir_condition=0;int temp_wall_condition=0;
 char debug_buffer[5];
 /*--------------------------------Global Variables - Wall Follow--------------------------------*/
 int wf_base_speed = MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW;//= Motor_PWM_Upper_Limit;
-const int wf_Kp=1.5,wf_Kd=90,wf_Ki=0.2;
 
 int wf_prev_error=0;int wf_error=0; int wf_cum_error=0;
 int wf_diff_speed;
 int wf_right_speed;int wf_left_speed;
 
+// const int wf_Kp=1.5,wf_Kd=90,wf_Ki=0.2;
+const int wf_Kp=2,wf_Kd=90,wf_Ki=0.2;
 const int wfR_Kp=5,wfR_Kd=10,wfR_Ki=0.2;
 const int wfL_Kp=5,wfL_Kd=20,wfL_Ki=0.2;
 
@@ -175,7 +176,10 @@ void setup() {
 void loop(){
 
 	// test_line_follow();
-	test_wall_maze();
+	// test_wall_maze();
+
+	wall_align_left(2000);
+	delay(5000);
 
 }
 

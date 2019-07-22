@@ -101,12 +101,12 @@ void motors_L_R_TurnRevolutions(int desired_revos_L,int desired_revos_R){
 
   int current_pos_L=0;
   int prev_error_L=0; int error_L=0;
-  int Kp_L=3,Kd_L=2;
+  int Kp_L=5,Kd_L=2;
   int motor_pwm_L;
 
   int current_pos_R=0;
   int prev_error_R=0; int error_R=0;
-  int Kp_R=3,Kd_R=2;
+  int Kp_R=5,Kd_R=2;
   int motor_pwm_R;
 
   unsigned long start_time=millis();
@@ -124,19 +124,19 @@ void motors_L_R_TurnRevolutions(int desired_revos_L,int desired_revos_R){
     motor_pwm_R= Kp_R * error_R + Kd_R*(error_R-prev_error_R); 
     prev_error_R = error_R;
 
-    if(error_L<10 && error_L>-10){
+    if(error_L<5 && error_L>-5){
       motorL_Drive(0,Motor_PWM_Upper_Limit);
     }else{
       motorL_Drive(motor_pwm_L,Motor_PWM_Upper_Limit);
     }
-    if(error_R<10 && error_R>-10){
+    if(error_R<5 && error_R>-5){
       motorR_Drive(0,Motor_PWM_Upper_Limit);
     }else{
       motorR_Drive(motor_pwm_R,Motor_PWM_Upper_Limit);
     }
     
 
-    if(error_L<10 && error_L>-10 && error_R<10 && error_R>-10){
+    if(error_L<5 && error_L>-5 && error_R<5 && error_R>-5){
       break;
     }
 
