@@ -172,18 +172,40 @@ void setup() {
 
 void loop(){
 
-	wall_align_left(3000);
-
-	delay(5000);
-	// test_wall_maze();
-
-	// motors_DriveGivenDistance(10);
-	// delay(2000);
-
-	// get_ToF_Measurements();print_tof_readings();
-	// // pid_wall_follow_left_step();
-	// pid_wall_follow_right_step();
+	test_line_follow();
 
 }
 
+
+void test_line_follow(){
+	get_IR_readings();get_IR_binary_array();
+	print_IR_binary_array();
+
+	temp_ir_condition = checkIRSpecialCondition();
+
+	switch (temp_ir_condition)
+	{
+		// case IR_ALL_BLACK:
+		//   motors_brake();
+		//   break;
+		case IR_90_LEFT:
+		/* code */
+		motors_DriveGivenDistance(13);
+		motors_Turn_90_Left(); /*turn right */
+		break;
+		case IR_90_RIGHT:
+		motors_DriveGivenDistance(13);/*go fwd 13cm */
+		motors_Turn_90_Right();  /*turn right */
+		break;
+		case IR_COIN_BOX:
+		//Coin Collect
+		//
+		motors_brake();
+		robot_state = STATE_DETECTED_COIN_BOX_1;
+		break;
+		default:
+		pid_line_follow_step();
+		break;
+	}
+}
 
