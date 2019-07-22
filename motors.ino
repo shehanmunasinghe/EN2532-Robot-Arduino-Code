@@ -257,23 +257,23 @@ void motorL_brake(){
   //Left
   digitalWrite(Motor2_INA, HIGH);
   digitalWrite(Motor2_INB, HIGH);
-  analogWrite(Motor2_PWM, 0);
+  analogWrite(Motor2_PWM, 255);
 }
 
 void motorR_brake(){
   //Right
   digitalWrite(Motor1_INA, HIGH);
   digitalWrite(Motor1_INB, HIGH);
-  analogWrite(Motor1_PWM, 0);
+  analogWrite(Motor1_PWM, 255);
 }
 
 void motors_brake(){
   //Left
   digitalWrite(Motor2_INA, HIGH);
   digitalWrite(Motor2_INB, HIGH);
-  analogWrite(Motor2_PWM, 0);
+  analogWrite(Motor2_PWM, 255);
   //Right
   digitalWrite(Motor1_INA, HIGH);
   digitalWrite(Motor1_INB, HIGH);
-  analogWrite(Motor1_PWM, 0);
+  analogWrite(Motor1_PWM, 255);
 }
