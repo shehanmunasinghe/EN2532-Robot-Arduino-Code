@@ -36,28 +36,28 @@
 
 //STATES
 #define STATE_PAUSED                      0
-#define STATE_DEFAULT_START               14 //STATE_WALL_MAZE  //1//STATE_INSIDE_START_BOX            //
+#define STATE_DEFAULT_START               1 //STATE_INSIDE_START_BOX  //STATE_WALL_MAZE  //1//STATE_INSIDE_START_BOX            //
 
-#define STATE_INSIDE_START_BOX            1
-#define STATE_LINE_1                      2
-#define STATE_DETECTED_COIN_BOX_1         3
-#define STATE_DETECTED_COIN_COLOR         4
-#define STATE_DETECTED_Y_JUNCTION         5
-#define STATE_SELECTED_Y_PATH             6
-#define STATE_DETECTED_COIN_BOX_2         7
-#define STATE_END_OF_Y                    8
-#define STATE_LINE_2                      9
-#define STATE_RAMP_CLIMB                  10
-#define STATE_RAMP_TOP                    11
-#define STATE_RAMP_DESCEND                12
-#define STATE_LINE_3                      13
-#define STATE_WALL_MAZE                   14
-#define STATE_LINE_4                      15
-#define STATE_DETECTED_WATER_JUNCTION     16
-#define STATE_SELECTED_WATER_PATH         17
-#define STATE_DETECTED_WATER_TANK         18
-#define STATE_RETURNED_TO_WATER_JUNCTION  19
-#define STATE_DETECTED_END_BOX            20
+#define STATE_INSIDE_START_BOX                  1
+#define STATE_LINE_1                            2
+#define STATE_DETECTED_COIN_BOX_1               3
+#define STATE_LINE_FOLLOW_UNTIL_Y_JUNCTION_1    4
+#define STATE_DETECTED_Y_JUNCTION               5
+#define STATE_SELECTED_Y_PATH                   6
+#define STATE_DETECTED_COIN_BOX_2               7
+#define STATE_LINE_FOLLOW_UNTIL_Y_JUNCTION_2    8
+#define STATE_LINE_2                            9
+#define STATE_RAMP_CLIMB                        10
+#define STATE_RAMP_TOP                          11
+#define STATE_RAMP_DESCEND                      12
+#define STATE_LINE_3                            13
+#define STATE_WALL_MAZE                         14
+#define STATE_LINE_4                            15
+#define STATE_DETECTED_WATER_JUNCTION           16
+#define STATE_SELECTED_WATER_PATH               17
+#define STATE_DETECTED_WATER_TANK               18
+#define STATE_RETURNED_TO_WATER_JUNCTION        19
+#define STATE_DETECTED_END_BOX                  20
 
 
 //IMU STATES
@@ -83,14 +83,20 @@
 
 
 //DEBUG Messages
-#define DEBUG_IR_ARRAY 						1
-#define DEBUG_TOFS 							2
-#define DEBUG_STATE_TRANSITION				3
-#define DEBUG_CHECK_IR_SPECIAL_CONDITION	4
+#define DEBUG_IR_ARRAY 						          1
+#define DEBUG_TOFS 						            	2
+#define DEBUG_STATE_TRANSITION		      		3
+#define DEBUG_CHECK_IR_SPECIAL_CONDITION  	4
 #define DEBUG_CHECK_MAZE_SPECIAL_CONDITION	5
 
+//Motor PWM Limits
 #define MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW 	60
 #define MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW 	65
+
+//Coin Detected Colors
+#define COIN_COLOR_RED          1
+#define COIN_COLOR_GREEN        2
+#define COIN_COLOR_BLUE         3
 /*--------------------------------Libraries------------------------------------------*/
 #include <Encoder.h>
 #include <Servo.h>
@@ -130,6 +136,8 @@ bool button_pressed=false;
 int temp_ir_condition=0;int temp_wall_condition=0;
 
 char debug_buffer[5];
+
+int detected_coin_color;
 /*--------------------------------Global Variables - Wall Follow--------------------------------*/
 int wf_base_speed = MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW;//= Motor_PWM_Upper_Limit;
 
@@ -176,12 +184,15 @@ void setup() {
 void loop(){
 	// test_wall_maze();
 
-   test_line_follow();
+  //  test_line_follow_1();
   // pid_line_follow_step();
+  
+  decide();
 
-  get_IR_readings();
-  get_IR_binary_array();
-  print_IR_binary_array();
+  // get_IR_readings();
+  // get_IR_binary_array();
+  // print_IR_readings();
+  // print_IR_binary_array();
 
 }
 
