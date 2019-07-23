@@ -89,7 +89,8 @@
 #define DEBUG_CHECK_IR_SPECIAL_CONDITION	4
 #define DEBUG_CHECK_MAZE_SPECIAL_CONDITION	5
 
-#define MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW 60
+#define MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW 	60
+#define MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW 	65
 /*--------------------------------Libraries------------------------------------------*/
 #include <Encoder.h>
 #include <Servo.h>
@@ -131,20 +132,21 @@ int temp_ir_condition=0;int temp_wall_condition=0;
 char debug_buffer[5];
 /*--------------------------------Global Variables - Wall Follow--------------------------------*/
 int wf_base_speed = MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW;//= Motor_PWM_Upper_Limit;
-const int wf_Kp=1.5,wf_Kd=90,wf_Ki=0.2;
 
 int wf_prev_error=0;int wf_error=0; int wf_cum_error=0;
 int wf_diff_speed;
 int wf_right_speed;int wf_left_speed;
 
+// const int wf_Kp=1.5,wf_Kd=90,wf_Ki=0.2;
+const int wf_Kp=2,wf_Kd=90,wf_Ki=0.2;
 const int wfR_Kp=5,wfR_Kd=10,wfR_Ki=0.2;
 const int wfL_Kp=5,wfL_Kd=20,wfL_Ki=0.2;
 
 /*--------------------------------Global Variables - Line Follow--------------------------------*/
 // int lf_base_speed = Motor_PWM_Upper_Limit/2;
 // const int lf_Kp=20,lf_Kd=5;//lf_Ki=0.2;
-int lf_base_speed = Motor_PWM_Upper_Limit;
-const int lf_Kp=20,lf_Kd=5,lf_Ki=0.2;
+int lf_base_speed = MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW;
+const int lf_Kp=35,lf_Kd=80,lf_Ki=0.2;
 
 int lf_prev_error=0;int lf_error=0; int lf_cum_error=0;
 int lf_diff_speed;
@@ -164,25 +166,22 @@ void setup() {
 
   robot_state = STATE_DEFAULT_START;
 
-  Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW;
+  // Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW;
+	Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW;
 
 }
 
 /*--------------------------------Loop-----------------------------------------------*/
 
 void loop(){
-
-	wall_align_left(3000);
-
-	delay(5000);
 	// test_wall_maze();
 
-	// motors_DriveGivenDistance(10);
-	// delay(2000);
+   test_line_follow();
+  // pid_line_follow_step();
 
-	// get_ToF_Measurements();print_tof_readings();
-	// // pid_wall_follow_left_step();
-	// pid_wall_follow_right_step();
+  get_IR_readings();
+  get_IR_binary_array();
+  print_IR_binary_array();
 
 }
 

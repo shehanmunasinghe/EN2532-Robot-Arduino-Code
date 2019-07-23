@@ -26,7 +26,7 @@ int checkMazeSpecialCondition(){
         Serial2.println("WALL_ONLY_RIGHT_FREE");
         return WALL_ONLY_RIGHT_FREE;
     }
-    else if (tof_left_1 < 200 && tof_right_1 < 200 and tof_front < 100){
+    else if (tof_left_1 < 200 && tof_right_1 < 200 and tof_front < 360){
         Serial2.println("WALL_DEAD_END");
         return WALL_DEAD_END;
     } else

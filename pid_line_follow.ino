@@ -10,12 +10,6 @@ void clear_line_follow_pid_variables(){
  
 void pid_line_follow_step(){    
 
-    //check_45();
-    // get_IR_readings();
-
-    //checkIRSpecialCondition();
-
-
     avg_ir_pos= get_IR_Position();//Serial2.println(avg_ir_pos);
     
 
