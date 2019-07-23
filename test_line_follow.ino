@@ -10,13 +10,16 @@ void test_line_follow(){
 		//   motors_brake();
 		//   break;
 		case IR_90_LEFT:
-			motors_DriveGivenDistance(13);
+			motors_DriveGivenDistance(11);
 			motors_Turn_90_Left(); /*turn left */
+			delay(100);
+
 			break;
 
 		case IR_90_RIGHT:
-			motors_DriveGivenDistance(13);/*go fwd 13cm */
+			motors_DriveGivenDistance(11);/*go fwd 11cm */
 			motors_Turn_90_Right();  /*turn right */
+			delay(100);
 			break;
 
 		case IR_COIN_BOX:
