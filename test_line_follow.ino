@@ -25,8 +25,7 @@ void test_line_follow(){
 		case IR_COIN_BOX:
 		    motors_brake();
       		delay(5000);
-			//Coin Collect
-			//
+			//Move to Coin Collect state
 			robot_state = STATE_DETECTED_COIN_BOX_1;
 			break;
 

@@ -176,12 +176,14 @@ void setup() {
 void loop(){
 	// test_wall_maze();
 
-   test_line_follow();
+  //  test_line_follow();
   // pid_line_follow_step();
-
-  get_IR_readings();
-  get_IR_binary_array();
-  print_IR_binary_array();
+  
+  decide();
+  
+  // get_IR_readings();
+  // get_IR_binary_array();
+  // print_IR_binary_array();
 
 }
 
