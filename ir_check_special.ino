@@ -24,17 +24,17 @@ int checkIRSpecialCondition(){
       Serial2.println("IR_ALL_WHITE");
       return IR_ALL_WHITE;
     }
-    else if(13>array_sum(irBinaryValue,0,15) && array_sum(irBinaryValue,0,15)>6 && irBinaryValue[0]==0 && irBinaryValue[15]==0) //Detect coin box
+    else if(array_sum(irBinaryValue,3,13)>7) //&& irBinaryValue[0]==0 && irBinaryValue[15]==0) //Detect coin box
     {
       Serial2.println("IR_COIN_BOX");
       return IR_COIN_BOX;
     }
-    else if(array_sum(irBinaryValue,0,7)>=5) //Detect Right Turn
+    else if(array_sum(irBinaryValue,0,7)>=6 && irBinaryValue[15]==0) //Detect Right Turn
     {
       Serial2.println("Right");
       return IR_90_RIGHT;
     }
-    else if(array_sum(irBinaryValue,8,15)>=5) //Detect Left Turn
+    else if(array_sum(irBinaryValue,8,15)>=6 && irBinaryValue[0]==0) //Detect Left Turn
     {
       // motors_DriveGivenDistance(13);
       // motors_Turn_90_Left(); /*turn left */

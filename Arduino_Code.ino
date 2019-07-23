@@ -90,7 +90,7 @@
 #define DEBUG_CHECK_MAZE_SPECIAL_CONDITION	5
 
 #define MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW 	60
-#define MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW 	60
+#define MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW 	50
 /*--------------------------------Libraries------------------------------------------*/
 #include <Encoder.h>
 #include <Servo.h>
@@ -146,7 +146,7 @@ const int wfL_Kp=5,wfL_Kd=20,wfL_Ki=0.2;
 // int lf_base_speed = Motor_PWM_Upper_Limit/2;
 // const int lf_Kp=20,lf_Kd=5;//lf_Ki=0.2;
 int lf_base_speed = MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW;
-const int lf_Kp=35,lf_Kd=10,lf_Ki=0.2;
+const int lf_Kp=25,lf_Kd=80,lf_Ki=0;
 
 int lf_prev_error=0;int lf_error=0; int lf_cum_error=0;
 int lf_diff_speed;
@@ -166,8 +166,8 @@ void setup() {
 
   robot_state = STATE_DEFAULT_START;
 
-  Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW;
-	// Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW;
+  // Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW;
+	Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW;
 
 }
 
@@ -176,7 +176,13 @@ void setup() {
 void loop(){
 	// test_wall_maze();
 
-  test_line_follow();
+   test_line_follow();
+  // pid_line_follow_step();
+
+  get_IR_readings();
+  get_IR_binary_array();
+  print_IR_binary_array();
 
 }
+
 
