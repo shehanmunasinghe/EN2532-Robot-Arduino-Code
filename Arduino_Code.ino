@@ -1,10 +1,10 @@
 /*--------------------------------Pin Definitions--------------------------------*/
 
-//rotaryEncRight
+//EncRight
 #define Motor1_INA 24//D5
 #define Motor1_INB 25//D7
 #define Motor1_PWM 11//D6
-//rotaryEncLeft
+//EncLeft
 #define Motor2_INA 26//D2
 #define Motor2_INB 27//D4
 #define Motor2_PWM 12//D3
@@ -32,6 +32,7 @@
 #define TOF4_ADDR 0x2D
 #define TOF5_ADDR 0x2E
 
+#define MPU6050_ADDR 0x68
 /*--------------------------------Constant Definitions--------------------------------*/
 
 //STATES
@@ -97,6 +98,11 @@
 #define COIN_COLOR_RED          1
 #define COIN_COLOR_GREEN        2
 #define COIN_COLOR_BLUE         3
+
+//IMU
+#define IMU_GOING_LEVEL       0
+#define IMU_GOING_UP          1
+#define IMU_GOING_DOWN        2
 /*--------------------------------Libraries------------------------------------------*/
 #include <Encoder.h>
 #include <Servo.h>
@@ -138,6 +144,12 @@ int temp_ir_condition=0;int temp_wall_condition=0;
 char debug_buffer[5];
 
 int detected_coin_color;
+
+int16_t IMU_AcX,IMU_AcY,IMU_AcZ,IMU_Tmp,IMU_GyX,IMU_GyY,IMU_GyZ;
+double IMU_x,IMU_y,IMU_z;
+
+#define IMU_minVal -1600
+#define IMU_maxVal -700
 /*--------------------------------Global Variables - Wall Follow--------------------------------*/
 int wf_base_speed = MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW;//= Motor_PWM_Upper_Limit;
 
@@ -172,6 +184,8 @@ void setup() {
   init_Servos();
   init_TOFs();
 
+  init_IMU();
+
   robot_state = STATE_DEFAULT_START;
 
   // Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW;
@@ -187,13 +201,15 @@ void loop(){
   //  test_line_follow_1();
   // pid_line_follow_step();
   
-  decide();
+  // decide();
 
   // get_IR_readings();
   // get_IR_binary_array();
   // print_IR_readings();
   // print_IR_binary_array();
 
+  get_ToF_Measurements();print_tof_readings();
+  check_IMU_status();
 }
 
 
