@@ -174,18 +174,9 @@ void setup() {
 /*--------------------------------Loop-----------------------------------------------*/
 
 void loop(){
-
-	// test_line_follow();
 	// test_wall_maze();
 
-	// wall_align_left(2000);
-	// delay(5000);
-
-  // get_IR_readings();
-  // print_IR_readings();
-
-  get_ToF_Measurements();
-  print_tof_readings();
+  test_line_follow();
 
 }
 
