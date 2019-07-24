@@ -201,15 +201,15 @@ void loop(){
   //  test_line_follow_1();
   // pid_line_follow_step();
   
-  // decide();
+  decide();
 
   // get_IR_readings();
   // get_IR_binary_array();
   // print_IR_readings();
   // print_IR_binary_array();
 
-  get_ToF_Measurements();print_tof_readings();
-  check_IMU_status();
+  // get_ToF_Measurements();print_tof_readings();
+  // check_IMU_status();
 }
 
 
