@@ -126,10 +126,10 @@ void decide(){
 			if(!test_line_follow_3()){
 				motors_DriveGivenDistance(10);
 				if(detected_coin_color==COIN_COLOR_BLUE){
-					motors_Turn_90_Left();
+					motors_Turn_45_Left();
 				}else if (detected_coin_color==COIN_COLOR_BLUE)
 				{
-					motors_Turn_90_Right();
+					motors_Turn_45_Right();
 				}						
 				robot_state = STATE_LINE_2;
 				break;
@@ -140,7 +140,21 @@ void decide(){
 
 	case STATE_LINE_2:
 		Serial2.println("STATE_LINE_2");
+		IMU_status=check_IMU_status();
+		switch (IMU_status)
+		{
+		case IMU_GOING_UP:
+			Motor_PWM_Upper_Limit=255;
+			break;
+		case IMU_GOING_DOWN:
+			Motor_PWM_Upper_Limit=30;
+			break;		
+		default:
+			Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW;
+			break;
+		}
 		test_line_follow_4();//To be changed
+		
 		break;
     //9
     /*case STATE_LINE_2:

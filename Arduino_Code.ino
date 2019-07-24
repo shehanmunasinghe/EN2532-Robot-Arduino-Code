@@ -202,7 +202,7 @@ void loop(){
   //  test_line_follow_1();
   // pid_line_follow_step();
   
-  decide();
+  // decide();
 
   // get_IR_readings();
   // get_IR_binary_array();
@@ -211,6 +211,29 @@ void loop(){
 
   // get_ToF_Measurements();print_tof_readings();
   // check_IMU_status();
+
+  IMU_status=check_IMU_status();
+  switch (IMU_status)
+  {
+  case IMU_GOING_UP:
+    Motor_PWM_Upper_Limit=130;
+    lf_base_speed=130;
+    test_line_follow_4();//To be changed
+    break;
+  case IMU_GOING_DOWN:
+    // Motor_PWM_Upper_Limit=30;
+    // lf_base_speed=30;
+    motors_brake();
+    break;		
+  default:
+    Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW;
+    lf_base_speed=MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW;
+    test_line_follow_4();//To be changed
+    break;
+  }
+  
+  // break;
+
 }
 
 

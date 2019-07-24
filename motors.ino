@@ -247,6 +247,13 @@ void motors_Turn_45_Right(){
   motors_L_R_TurnRevolutions(415,-415);
 }
 
+void motors_Turn_135_Left(){
+  motors_L_R_TurnRevolutions(-1245,1245);
+}
+void motors_Turn_135_Right(){
+  motors_L_R_TurnRevolutions(1245,-1245);
+}
+
 void motors_Turn_180(){
   motors_L_R_TurnRevolutions(1660,-1660);
   //OR
