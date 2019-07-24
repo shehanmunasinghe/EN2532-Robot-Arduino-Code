@@ -32,6 +32,7 @@ uint8_t check_IMU_status(){
     // Serial.println(IMU_z);
 
     // Serial2.println(IMU_y);
+    IMU_y=medianFilter_IMU_y.AddValue(IMU_y);
     if (IMU_y<=75){
         Serial2.print("GOING_UP   ");Serial2.println(IMU_y);
         return IMU_GOING_UP;

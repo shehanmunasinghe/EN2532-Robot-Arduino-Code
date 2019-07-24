@@ -111,6 +111,7 @@
 #include <Wire.h>
 #include <VL53L0X.h>
 
+# include  "MedianFilterLib.h"
 /*--------------------------------Global Objects--------------------------------*/
 
 
@@ -151,6 +152,9 @@ double IMU_x,IMU_y,IMU_z;
 
 #define IMU_minVal -1600
 #define IMU_maxVal -700
+
+MedianFilter < float > medianFilter_IMU_y( 5 );
+
 /*--------------------------------Global Variables - Wall Follow--------------------------------*/
 int wf_base_speed = MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW;//= Motor_PWM_Upper_Limit;
 
@@ -221,9 +225,9 @@ void loop(){
     test_line_follow_4();//To be changed
     break;
   case IMU_GOING_DOWN:
-    // Motor_PWM_Upper_Limit=30;
-    // lf_base_speed=30;
-    motors_brake();
+    Motor_PWM_Upper_Limit=0;
+    lf_base_speed=0;
+    // motors_brake();
     break;		
   default:
     Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW;
