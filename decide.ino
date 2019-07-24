@@ -27,9 +27,20 @@ void decide(){
       break;
     //2
     case STATE_LINE_1:
-      Serial2.println("STATE_LINE_1");
-      test_line_follow_1(); //Inside this function, it will move to Coin Collect state  //robot_state=?? To be updated inside the line follow function
-      break;
+    	Serial2.println("STATE_LINE_1");
+    	// test_line_follow_1();
+		while (true)
+		{
+			if(!test_line_follow_2()){
+				robot_state = STATE_LINE_1B;
+				break;
+			}
+		}
+    	break;
+    case STATE_LINE_1B:
+      Serial2.println("STATE_LINE_1B");
+		test_line_follow_1();
+    	break;	  
     //3
     case STATE_DETECTED_COIN_BOX_1:
 		motors_brake();delay(1000);
@@ -114,6 +125,12 @@ void decide(){
 		{
 			if(!test_line_follow_3()){
 				motors_DriveGivenDistance(10);
+				if(detected_coin_color==COIN_COLOR_BLUE){
+					motors_Turn_90_Left();
+				}else if (detected_coin_color==COIN_COLOR_BLUE)
+				{
+					motors_Turn_90_Right();
+				}						
 				robot_state = STATE_LINE_2;
 				break;
 			}

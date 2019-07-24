@@ -41,6 +41,7 @@
 
 #define STATE_INSIDE_START_BOX                  1
 #define STATE_LINE_1                            2
+#define STATE_LINE_1B                           102
 #define STATE_DETECTED_COIN_BOX_1               3
 #define STATE_LINE_FOLLOW_UNTIL_Y_JUNCTION_1    4
 #define STATE_DETECTED_Y_JUNCTION               5
@@ -166,7 +167,7 @@ const int wfL_Kp=5,wfL_Kd=20,wfL_Ki=0.2;
 // int lf_base_speed = Motor_PWM_Upper_Limit/2;
 // const int lf_Kp=20,lf_Kd=5;//lf_Ki=0.2;
 int lf_base_speed = MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW;
-const int lf_Kp=35,lf_Kd=80,lf_Ki=0.2;
+const int lf_Kp=45,lf_Kd=100,lf_Ki=0.5;
 
 int lf_prev_error=0;int lf_error=0; int lf_cum_error=0;
 int lf_diff_speed;

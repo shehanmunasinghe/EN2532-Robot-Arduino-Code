@@ -23,26 +23,26 @@ int checkIRSpecialCondition(){
 		Serial2.println("IR_ALL_WHITE");
 		return IR_ALL_WHITE;
     }else if(array_sum(irBinaryValue,0,15)>=7 ) {
-		motors_brake();
-		get_IR_readings();get_IR_binary_array();
-		delay(100);
-     
-		if (array_sum(irBinaryValue,2,13)>=7 && array_sum(irBinaryValue,0,1)<2 && array_sum(irBinaryValue,14,15)<2){    
-			//Detect coin box
-			Serial2.println("IR_COIN_BOX");
-			return IR_COIN_BOX;
-		}else if(array_sum(irBinaryValue,0,7)>=7 && irBinaryValue[15]==0 && array_sum(irBinaryValue,0,1)>=1) //Detect Right Turn
-		{
-			Serial2.println("Right");
-			return IR_90_RIGHT; 
-		}
-		else if(array_sum(irBinaryValue,8,15)>=7 && irBinaryValue[0]==0 && array_sum(irBinaryValue,14,15)>=1) //Detect Left Turn
-		{
-		// motors_DriveGivenDistance(13);
-		// motors_Turn_90_Left(); Turn left
-		Serial2.println("Left");
-		return IR_90_LEFT;
-		} 
+      motors_brake();
+      get_IR_readings();get_IR_binary_array();
+      delay(100);
+      
+      if (array_sum(irBinaryValue,2,13)>=7 && array_sum(irBinaryValue,0,1)<2 && array_sum(irBinaryValue,14,15)<2){    
+        //Detect coin box
+        Serial2.println("IR_COIN_BOX");
+        return IR_COIN_BOX;
+      }else if(array_sum(irBinaryValue,0,7)>=7 && irBinaryValue[15]==0 && array_sum(irBinaryValue,0,1)>=1) //Detect Right Turn
+      {
+        Serial2.println("Right");
+        return IR_90_RIGHT; 
+      }
+      else if(array_sum(irBinaryValue,8,15)>=7 && irBinaryValue[0]==0 && array_sum(irBinaryValue,14,15)>=1) //Detect Left Turn
+      {
+      // motors_DriveGivenDistance(13);
+      // motors_Turn_90_Left(); Turn left
+      Serial2.println("Left");
+      return IR_90_LEFT;
+      } 
     }
     /* else if((array_sum(irBinaryValue,2,7)>=3 && array_sum(irBinaryValue,8,13)>=3)  && array_sum(irBinaryValue,0,1)<2 && array_sum(irBinaryValue,14,15)<2 ) //Detect coin box
     {
