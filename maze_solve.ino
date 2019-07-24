@@ -10,35 +10,35 @@ void test_wall_maze(){
 		// 	motors_Turn_180();
 		// 	break;
 		case WALL_LEFT_FREE:
-			while (true)
-			{ 
-				// comm_handler_get_tofs();
-				get_ToF_Measurements();
-				if(tof_left_2 >200){
-					Serial2.println("tof_left_2 >200");
-					motors_brake();
-					delay(1000);
-					break;
-				}       
-				// motors_DriveForward(MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW/2,MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW/2);       
-				motors_DriveForward(MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW,MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW);       
-				// pid_wall_follow_right_step();
+			// while (true)
+			// { 
+			// 	// comm_handler_get_tofs();
+			// 	get_ToF_Measurements();
+			// 	if(tof_left_2 >200){
+			// 		Serial2.println("tof_left_2 >200");
+			// 		motors_brake();
+			// 		delay(1000);
+			// 		break;
+			// 	}       
+			// 	// motors_DriveForward(MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW/2,MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW/2);       
+			// 	motors_DriveForward(MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW,MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW);       
+			// 	// pid_wall_follow_right_step();
 
-			}
+			// }
 
-			motors_DriveGivenDistance(3);
-			delay(1000);
+			motors_DriveGivenDistance(4); 
+			delay(100);
 			motors_Turn_90_Left();
-			delay(1000);
+			delay(100);
 			// motors_DriveGivenDistance(36); 
-			if(tof_front>410){
-				motors_DriveGivenDistance(36); 
-			}else
-			{
-				motors_DriveGivenDistance(tof_front/10 -2);
-			}
+			// if(tof_front>410){
+			// 	motors_DriveGivenDistance(36); 
+			// }else
+			// {
+			// 	motors_DriveGivenDistance(tof_front/10 -2);
+			// }
 
-			delay(2000);                   
+			//delay(2000);                   
 			break;      
 		case WALL_LEFT_BLOCKED_FRONT_FREE:
 			// motors_brake();delay(1000);

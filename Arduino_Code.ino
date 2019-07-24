@@ -163,6 +163,8 @@ const int wf_Kp=2,wf_Kd=90,wf_Ki=0.2;
 const int wfR_Kp=5,wfR_Kd=10,wfR_Ki=0.2;
 const int wfL_Kp=5,wfL_Kd=20,wfL_Ki=0.2;
 
+const int wfL2_Kp=2,wfL2_Kd=5,wfL2_Ki=0.3;
+
 /*--------------------------------Global Variables - Line Follow--------------------------------*/
 // int lf_base_speed = Motor_PWM_Upper_Limit/2;
 // const int lf_Kp=20,lf_Kd=5;//lf_Ki=0.2;
@@ -197,7 +199,8 @@ void setup() {
 /*--------------------------------Loop-----------------------------------------------*/
 
 void loop(){
-	// test_wall_maze();
+	//test_wall_maze();
+  
 
   //  test_line_follow_1();
   // pid_line_follow_step();
@@ -212,7 +215,7 @@ void loop(){
   // get_ToF_Measurements();print_tof_readings();
   // check_IMU_status();
 
-  IMU_status=check_IMU_status();
+  /* IMU_status=check_IMU_status();
   switch (IMU_status)
   {
   case IMU_GOING_UP:
@@ -229,10 +232,13 @@ void loop(){
     Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW;
     lf_base_speed=MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW;
     test_line_follow_4();//To be changed
-    break;
-  }
+    break; 
+  }*/
   
   // break;
+  // test_wallfollow2();
+  get_ToF_Measurements();print_tof_readings();
+  pid_wall_follow_left_step_2();  
 
 }
 
