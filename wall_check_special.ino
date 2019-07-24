@@ -43,30 +43,25 @@ int checkMazeSpecialCondition(){
     
 }
 
-int test_wallfollow2(){
-    get_ToF_Measurements();print_tof_readings();
-    if (tof_left_1<200){
-        if (tof_front>120){pid_wall_follow_left_step();}
-        else{motors_Turn_90_Right();}
+
+int checkMazeSpecialCondition_2(){
+	if(tof_left_1>200){ //LEFT
+        Serial2.println("WALL_LEFT_FREE");
+        return WALL_LEFT_FREE;
+    }else {
+        if (tof_front>170){
+            Serial2.println("WALL_FOLLOW_LEFT");
+            return WALL_FOLLOW_LEFT;
+		}else{
+            if(tof_right_1>200){ 
+                Serial2.println("WALL_ONLY_RIGHT_FREE");
+                return WALL_ONLY_RIGHT_FREE;
+            }
+            else
+            {
+                Serial2.println("WALL_DEAD_END");
+                return WALL_DEAD_END;
+            }        	
+		}
     }
-    else{
-        while(1){
-        if (tof_left_2<120){
-            
-            motors_DriveForward(MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW/2,MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW/2); 
-        }
-        else{
-            motors_DriveGivenDistance(4);
-            delay(1000);
-            motors_Turn_90_Left();
-			delay(1000); 
-            break;
-        }
-        }
-    }
-
-
-
 }
-
-

@@ -82,6 +82,7 @@
 #define WALL_ONLY_RIGHT_FREE          5
 #define WALL_UNKNOWN_CONDITION        6
 #define WALL_TOF_NOT_INITIALIZED      7
+#define WALL_FOLLOW_LEFT              8
 
 
 //DEBUG Messages
@@ -163,7 +164,7 @@ const int wf_Kp=2,wf_Kd=90,wf_Ki=0.2;
 const int wfR_Kp=5,wfR_Kd=10,wfR_Ki=0.2;
 const int wfL_Kp=5,wfL_Kd=20,wfL_Ki=0.2;
 
-const int wfL2_Kp=2,wfL2_Kd=5,wfL2_Ki=0.3;
+const float wfL2_Kp=1; const float wfL2_Kd=1.5;const float wfL2_Ki=0.01;
 
 /*--------------------------------Global Variables - Line Follow--------------------------------*/
 // int lf_base_speed = Motor_PWM_Upper_Limit/2;
@@ -236,9 +237,10 @@ void loop(){
   }*/
   
   // break;
-  // test_wallfollow2();
-  get_ToF_Measurements();print_tof_readings();
-  pid_wall_follow_left_step_2();  
+
+  test_wall_maze_2();
+  // get_ToF_Measurements();print_tof_readings();
+  // pid_wall_follow_left_step_2();  
 
 }
 

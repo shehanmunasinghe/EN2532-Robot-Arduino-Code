@@ -26,10 +26,11 @@ void test_wall_maze(){
 
 			// }
 
-			motors_DriveGivenDistance(4); 
-			delay(100);
-			motors_Turn_90_Left();
-			delay(100);
+			// motors_DriveGivenDistance(4); 
+			// delay(100);
+			// motors_Turn_90_Left();
+			// delay(100);
+
 			// motors_DriveGivenDistance(36); 
 			// if(tof_front>410){
 			// 	motors_DriveGivenDistance(36); 
@@ -130,8 +131,92 @@ void test_wall_maze(){
 	}
 }
 
+void test_wall_maze_2(){
+    get_ToF_Measurements();print_tof_readings();
+	temp_wall_condition = checkMazeSpecialCondition_2();
 
- void wall_align_left(int timeout){
+	switch (temp_wall_condition){
+		case WALL_LEFT_FREE:
+			while(true){
+				get_ToF_Measurements();
+				if (tof_left_2<150){
+					motors_DriveForward(MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW,MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW);             
+					// motors_DriveForward(MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW/2,MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW/2); 
+				}
+				else{
+					motors_DriveGivenDistance(4);
+					delay(1000);
+					motors_Turn_90_Left();
+					delay(1000); 
+					motors_DriveGivenDistance(20);
+					break;
+				}
+			}
+			clear_wall_follow_pid_variables();
+			break;
+		case WALL_ONLY_RIGHT_FREE:
+			motors_Turn_90_Right();
+			delay(1000);
+			wall_align_left(2000);
+			clear_wall_follow_pid_variables();
+			break;
+
+		case WALL_DEAD_END:
+			// motors_Turn_180();
+			if(tof_right_1>tof_left_1){
+				motors_Turn_90_Right();
+				// get_ToF_Measurements();
+				// motors_DriveGivenDistance(10-(tof_front/10));
+				delay(1000);
+				motors_Turn_90_Right();
+			}else
+			{
+				motors_Turn_90_Left();
+				// get_ToF_Measurements();
+				// motors_DriveGivenDistance(10-(tof_front/10));
+				delay(1000);
+				motors_Turn_90_Left();				
+			}
+			
+			delay(1000);
+			clear_wall_follow_pid_variables();
+			wall_align_left(2000);
+			break;
+			
+		default:
+			pid_wall_follow_left_step_2();
+			break;
+	}
+
+	// if(tof_left_1>200){ //LEFT
+    //     while(true){
+	// 		get_ToF_Measurements();
+	// 		if (tof_left_2<150){
+	// 			motors_DriveForward(MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW,MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW);             
+	// 			// motors_DriveForward(MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW/2,MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW/2); 
+	// 		}
+	// 		else{
+	// 			motors_DriveGivenDistance(4);
+	// 			delay(1000);
+	// 			motors_Turn_90_Left();
+	// 			delay(1000); 
+	// 			motors_DriveGivenDistance(20);
+	// 			break;
+	// 		}
+    //     }
+    // }else {
+    //     if (tof_front>120){
+	// 		pid_wall_follow_left_step_2();
+	// 	}else{
+	// 		motors_Turn_90_Right();
+	// 	}
+    // }
+
+
+
+}
+
+void wall_align_left(int timeout){
 	Serial2.println("wall_align_left");
 
     unsigned long start_time=millis();
