@@ -23,6 +23,7 @@ void decide(){
     case STATE_INSIDE_START_BOX:
       Serial2.println("STATE_INSIDE_START_BOX");
       motors_DriveGivenDistance(10);
+	  delay(100);
       robot_state=STATE_LINE_1;
       break;
     //2
@@ -140,41 +141,46 @@ void decide(){
 
 	case STATE_LINE_2:
 		Serial2.println("STATE_LINE_2");
-		IMU_status=check_IMU_status();
-		switch (IMU_status)
+		while (true)
 		{
-		case IMU_GOING_UP:
-			Motor_PWM_Upper_Limit=255;
-			break;
-		case IMU_GOING_DOWN:
-			Motor_PWM_Upper_Limit=30;
-			break;		
-		default:
-			Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW;
-			break;
+			get_ToF_Measurements_Only_Front();Serial2.print(tof_front);
+			if(tof_front<210){
+				robot_state=STATE_RAMP_AREA;
+				break;
+			}
+			test_line_follow_2();
 		}
-		test_line_follow_4();//To be changed
+		break;
+
+	case STATE_RAMP_AREA:
+		Serial2.println("STATE_RAMP_AREA");
+		while (true){
+			IMU_status=check_IMU_status();
+			if(IMU_status==IMU_GOING_UP){
+				Motor_PWM_Upper_Limit=130; lf_base_speed=130;
+			}else if (IMU_status==IMU_GOING_DOWN)
+			{
+				Motor_PWM_Upper_Limit=0;lf_base_speed=0;
+				get_ToF_Measurements_Only_Front();Serial2.print(tof_front);
+				if(tof_front<210){
+					robot_state=STATE_LINE_3;
+					break;
+				}
+			}else
+			{
+				Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW; lf_base_speed=MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW;
+			}
+			test_line_follow_2();
+
+			//TODO: ADD - code to exit this state when tof_front is blocked
+		}
 		
 		break;
-    //9
-    /*case STATE_LINE_2:
-      Serial2.println("STATE_LINE_2");
-      
-      get_IR_readings();get_IR_binary_array();
-      print_IR_binary_array();
 
-      if(IMU_status==IMU_RAMP_AHEAD_OR_CLIMB){
-        Motor_PWM_Upper_Limit=255;
-      }else if(IMU_status==IMU_RAMP_DESCENT)
-      {
-        //Motor_PWM_Upper_Limit=0;
-        motors_brake();
-      }else
-      {
-        Motor_PWM_Upper_Limit=100;
-      }
-      pid_line_follow_step();
-      break; */
+	case STATE_LINE_3:
+		motors_brake();
+		
+		break;
 
     /*     case STATE_WALL_MAZE:
       Serial2.println("STATE_WALL_MAZE");

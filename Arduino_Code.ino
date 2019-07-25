@@ -49,9 +49,7 @@
 #define STATE_DETECTED_COIN_BOX_2               7
 #define STATE_LINE_FOLLOW_UNTIL_Y_JUNCTION_2    8
 #define STATE_LINE_2                            9
-#define STATE_RAMP_CLIMB                        10
-#define STATE_RAMP_TOP                          11
-#define STATE_RAMP_DESCEND                      12
+#define STATE_RAMP_AREA                         10
 #define STATE_LINE_3                            13
 #define STATE_WALL_MAZE                         14
 #define STATE_LINE_4                            15
@@ -208,7 +206,7 @@ void loop(){
   //  test_line_follow_1();
   // pid_line_follow_step();
   
-  // decide();
+  decide();
 
   // get_IR_readings();
   // get_IR_binary_array();
@@ -247,8 +245,8 @@ void loop(){
 
   // Serial3.println(millis());
   
-  detect_coin_color();
-  delay(1000);
+  // detect_coin_color();
+  // delay(1000);
 
 
 
