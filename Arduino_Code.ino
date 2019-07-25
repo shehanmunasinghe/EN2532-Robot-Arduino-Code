@@ -180,8 +180,9 @@ int avg_ir_pos=0;
 /*--------------------------------Setup-----------------------------------------------*/
 
 void setup() {
-  Serial.begin(115200);
+  // Serial.begin(115200);
   Serial2.begin(115200);
+  Serial3.begin(9600);
   
   init_motors();
   init_IR();
@@ -189,6 +190,7 @@ void setup() {
   init_TOFs();
 
   init_IMU();
+  init_rpi();
 
   robot_state = STATE_DEFAULT_START;
 
@@ -238,9 +240,17 @@ void loop(){
   
   // break;
 
-  test_wall_maze_2();
+  // test_wall_maze_2();
+
   // get_ToF_Measurements();print_tof_readings();
   // pid_wall_follow_left_step_2();  
+
+  // Serial3.println(millis());
+  
+  detect_coin_color();
+  delay(1000);
+
+
 
 }
 
