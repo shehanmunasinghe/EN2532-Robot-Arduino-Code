@@ -34,7 +34,7 @@ void test_line_follow_1(){
 	}
 }
 
-//line follow function without checking for coin box
+//line follow function without checking for coin box //Return on LEFT or RIGHT
 bool test_line_follow_2(){
 	get_IR_readings();get_IR_binary_array();
 	print_IR_readings();print_IR_binary_array();
@@ -42,11 +42,13 @@ bool test_line_follow_2(){
 	temp_ir_condition = checkIRSpecialCondition();
 
 	if(temp_ir_condition==IR_90_LEFT){
+			Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW; 
 			motors_DriveGivenDistance(11);
 			motors_Turn_90_Left(); /*turn left */
 			delay(100);
 			return 0;
 	}else if(temp_ir_condition==IR_90_RIGHT){
+			Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW; 
 			motors_DriveGivenDistance(11);/*go fwd 11cm */
 			motors_Turn_90_Right();  /*turn right */
 			delay(100);
@@ -107,3 +109,60 @@ bool test_line_follow_3(){
 // 	}
 
 // }
+
+//line follow function //Return on IR_ALL_BLACK
+bool test_line_follow_5(){
+	get_IR_readings();get_IR_binary_array();
+	print_IR_binary_array();
+
+	temp_ir_condition = checkIRSpecialCondition();
+
+	if(temp_ir_condition==IR_ALL_BLACK){
+		motors_brake();
+		return 0;
+	}else
+	{
+		pid_line_follow_step();
+		return 1;
+	}
+
+}
+
+//Return if IR_ALL_WHITE
+bool test_line_follow_6(){
+	get_IR_readings();get_IR_binary_array();
+	print_IR_binary_array();
+
+	temp_ir_condition = checkIRSpecialCondition();
+
+	if(temp_ir_condition==IR_ALL_WHITE){
+		motors_brake();
+		return 0;
+	}else
+	{
+		pid_line_follow_step();
+		return 1;
+	}
+
+}
+
+//Right priority line follow
+bool test_line_follow_7(){
+	get_IR_readings();get_IR_binary_array();
+	print_IR_readings();print_IR_binary_array();
+
+	temp_ir_condition = checkIRSpecialCondition();
+
+	if(temp_ir_condition==IR_90_RIGHT){
+			Motor_PWM_Upper_Limit=MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW; 
+			motors_DriveGivenDistance(11);/*go fwd 11cm */
+			motors_Turn_90_Right();  /*turn right */
+			delay(100);
+			return 0;
+	}else
+	{
+		pid_line_follow_step();
+		return 1;
+	}
+
+}

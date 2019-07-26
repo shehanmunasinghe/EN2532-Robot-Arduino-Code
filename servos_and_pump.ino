@@ -1,4 +1,4 @@
-void init_Servos(){
+void init_Servos_Pumps(){
     servo1.attach(Servo1_PWM);
     servo2.attach(Servo2_PWM);
     servo3.attach(Servo3_PWM);
@@ -7,6 +7,8 @@ void init_Servos(){
 
     coin_arm_rest_position();
     water_arm_rest_position();
+
+    pinMode(Pump_1,OUTPUT);
 }
 
 /*--------------------------------Servo Test Functions-----------------------------------------------*/
@@ -58,7 +60,11 @@ void water_arm_rest_position(){
 }
 
 void water_arm_active_position(){
-    servo1.write(150);
+    servo1.write(160);
+}
+
+void water_arm_mid_position(){
+    servo1.write(100);
 }
 
 void coin_arm_rest_position(){
@@ -67,4 +73,15 @@ void coin_arm_rest_position(){
 
 void coin_arm_pickup_position(){
     servo2.write(180);
+}
+
+void operate_pump(){
+    delay(2000);
+    digitalWrite(Pump_1,HIGH);delay(5000);
+    digitalWrite(Pump_1,LOW);delay(2000);
+    digitalWrite(Pump_1,HIGH);delay(5000);
+    digitalWrite(Pump_1,LOW);
+
+    delay(1000);
+
 }

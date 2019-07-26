@@ -131,7 +131,18 @@ void test_wall_maze(){
 	}
 }
 
-void test_wall_maze_2(){
+bool test_wall_maze_2(){
+
+	get_IR_readings();get_IR_binary_array();
+	temp_ir_condition = checkIRSpecialCondition();
+
+	if(temp_ir_condition==IR_COIN_BOX | temp_ir_condition==IR_NORMAL_LINE){
+		print_IR_binary_array();
+		Serial2.println("End of Maze Detected");		
+		motors_brake();
+		return 0;
+	}
+
     get_ToF_Measurements();print_tof_readings();
 	temp_wall_condition = checkMazeSpecialCondition_2();
 
@@ -148,7 +159,7 @@ void test_wall_maze_2(){
 					delay(1000);
 					motors_Turn_90_Left();
 					delay(1000); 
-					motors_DriveGivenDistance(20);
+					motors_DriveGivenDistance(23);
 					break;
 				}
 			}
@@ -187,6 +198,8 @@ void test_wall_maze_2(){
 			pid_wall_follow_left_step_2();
 			break;
 	}
+
+	return 1;
 
 	// if(tof_left_1>200){ //LEFT
     //     while(true){

@@ -20,6 +20,8 @@
 #define Servo4_PWM 5
 #define Servo5_PWM 4
 
+#define Pump_1        10
+
 #define TOF1_XSHUT 34           
 #define TOF2_XSHUT 33           
 #define TOF3_XSHUT 32           
@@ -53,10 +55,12 @@
 #define STATE_LINE_3                            13
 #define STATE_WALL_MAZE                         14
 #define STATE_LINE_4                            15
-#define STATE_DETECTED_WATER_JUNCTION           16
-#define STATE_SELECTED_WATER_PATH               17
+#define STATE_WATER_PATH_1                      16
+#define STATE_WATER_PATH_2                      17
 #define STATE_DETECTED_WATER_TANK               18
-#define STATE_RETURNED_TO_WATER_JUNCTION        19
+#define STATE_WATER_PATH_2_RETURN               117
+#define STATE_WATER_PATH_1_RETURN               116
+#define STATE_LINE_5                            19
 #define STATE_DETECTED_END_BOX                  20
 
 
@@ -184,7 +188,7 @@ void setup() {
   
   init_motors();
   init_IR();
-  init_Servos();
+  init_Servos_Pumps();
   init_TOFs();
 
   init_IMU();
@@ -248,8 +252,12 @@ void loop(){
   // detect_coin_color();
   // delay(1000);
 
+  // water_arm_active_position();
+  // operate_pump();
+  // water_arm_rest_position();
 
 
+  // delay(10000);
 }
 
 
