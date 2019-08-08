@@ -180,7 +180,9 @@ bool test_wall_maze_2(){
 					delay(1000);
 					motors_Turn_90_Right();
 					//motors_brake();
-					delay(1000); 
+					delay(1000);
+					wall_align_left(100);
+					delay(100);
 					motors_DriveGivenDistance(23);
 					break;
 				}
