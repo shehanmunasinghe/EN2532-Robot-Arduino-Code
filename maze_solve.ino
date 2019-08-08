@@ -133,15 +133,15 @@ void test_wall_maze(){
 
 bool test_wall_maze_2(){
 
-	get_IR_readings();get_IR_binary_array();
-	temp_ir_condition = checkIRSpecialCondition();
+	// get_IR_readings();get_IR_binary_array();
+	// temp_ir_condition = checkIRSpecialCondition();
 
-	if(temp_ir_condition==IR_COIN_BOX | temp_ir_condition==IR_NORMAL_LINE){
-		print_IR_binary_array();
-		Serial2.println("End of Maze Detected");		
-		motors_brake();
-		return 0;
-	}
+	// if(temp_ir_condition==IR_COIN_BOX | temp_ir_condition==IR_NORMAL_LINE){
+	// 	print_IR_binary_array();
+	// 	Serial2.println("End of Maze Detected");		
+	// 	motors_brake();
+	// 	return 0;
+	// }
 
     get_ToF_Measurements();print_tof_readings();
 	temp_wall_condition = checkMazeSpecialCondition_2();
@@ -156,8 +156,10 @@ bool test_wall_maze_2(){
 				}
 				else{
 					motors_DriveGivenDistance(4);
+					motors_brake();
 					delay(1000);
 					motors_Turn_90_Left();
+					//motors_brake();
 					delay(1000); 
 					motors_DriveGivenDistance(23);
 					break;
@@ -167,6 +169,7 @@ bool test_wall_maze_2(){
 			break;
 		case WALL_ONLY_RIGHT_FREE:
 			motors_Turn_90_Right();
+			//motors_brake();
 			delay(1000);
 			wall_align_left(2000);
 			clear_wall_follow_pid_variables();
@@ -178,15 +181,21 @@ bool test_wall_maze_2(){
 				motors_Turn_90_Right();
 				// get_ToF_Measurements();
 				// motors_DriveGivenDistance(10-(tof_front/10));
+
 				delay(1000);
+				//motors_brake();
 				motors_Turn_90_Right();
+				delay(1000);
+
 			}else
 			{
 				motors_Turn_90_Left();
 				// get_ToF_Measurements();
 				// motors_DriveGivenDistance(10-(tof_front/10));
 				delay(1000);
-				motors_Turn_90_Left();				
+				//motors_brake();
+				motors_Turn_90_Left();
+				delay(1000);				
 			}
 			
 			delay(1000);
@@ -240,8 +249,9 @@ void wall_align_left(int timeout){
 		{
 			get_ToF_Measurements();
 			if(tof_left_1<tof_left_2){
-				motorL_Drive(70,255);
-				motorR_brake();
+				motorL_Drive(90,255);
+				
+				//motorR_brake();
 			}else
 			{
 				motors_brake();
@@ -263,8 +273,9 @@ void wall_align_left(int timeout){
 		{
 			get_ToF_Measurements();
 			if(tof_left_1>tof_left_2){
-				motorR_Drive(70,255);
-				motorL_brake();
+				motorR_Drive(90,255);
+				
+				//motorL_brake();
 			}else
 			{
 				motors_brake();

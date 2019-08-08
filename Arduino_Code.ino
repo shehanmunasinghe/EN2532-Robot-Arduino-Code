@@ -95,7 +95,7 @@
 #define DEBUG_CHECK_MAZE_SPECIAL_CONDITION	5
 
 //Motor PWM Limits
-#define MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW 	60
+#define MOTOR_PWM_UPPER_LIMIT_WALL_FOLLOW 	90
 #define MOTOR_PWM_UPPER_LIMIT_LINE_FOLLOW 	65
 
 //Coin Detected Colors
@@ -166,7 +166,7 @@ const int wf_Kp=2,wf_Kd=90,wf_Ki=0.2;
 const int wfR_Kp=5,wfR_Kd=10,wfR_Ki=0.2;
 const int wfL_Kp=5,wfL_Kd=20,wfL_Ki=0.2;
 
-const float wfL2_Kp=1; const float wfL2_Kd=1.5;const float wfL2_Ki=0.01;
+const float wfL2_Kp=2; const float wfL2_Kd=4;const float wfL2_Ki=0.1;
 
 /*--------------------------------Global Variables - Line Follow--------------------------------*/
 // int lf_base_speed = Motor_PWM_Upper_Limit/2;
@@ -205,12 +205,13 @@ void setup() {
 
 void loop(){
 	//test_wall_maze();
+  test_wall_maze_2();
   
 
   //  test_line_follow_1();
   // pid_line_follow_step();
   
-  decide();
+  // decide();
 
   // get_IR_readings();
   // get_IR_binary_array();
